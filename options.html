@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WP Fullscreen Reader Options</title>
+</head>
+<body style="position: relative;">
+	<div align="center">
+		<h1 id="Text">Worpress Fullscreen Reader</h1>
+		<div style="border-color: gray; background-color: lightgray; border: 5px; width:350px; height: auto; border-style: outset; padding: 2em;">
+			<div align="left" style="width:100%; height:auto;">
+				<h2>Options</h2>
+				<b>Override Background: </b>
+				<input type="checkbox" id="overBG">
+				<input type="color" id="overBGcolor">
+				<br />
+				<br />
+				<b>Override Text Color: </b>
+				<input type="checkbox" id="overText">
+				<input type="color" id="overTextColor">
+				<br />
+				<br />
+				<b>Go Back to Initial Page: </b>
+				<input type="checkbox" id="initPage">
+				<br />
+				<i>Note:"Reload After Switching Pages" will override this option. </i>
+				<br />
+				<br />
+				<b>Hide Comment Section: </b>
+				<input type="checkbox" id="hideComments">
+				<br />
+				<br />
+				<!--<b>Turn Off Scroll Memory: </b>
+				<input type="checkbox" id="noScrollMemory">
+				<br />
+				<i>Note: Will reduce resource usage. </i>
+				<br />
+				<br />-->
+				<b>Reload After Switching Pages:</b>
+				<input type="checkbox" id="reloadPages">
+				<br />
+				<i>Note: While this is on the page will reload on exiting fullscreen. However, scroll memory will not work properly on exiting to a new page.</i>
+				<br />
+				<br />
+				<div id="status"></div>
+				<button id="save">Save</button>
+				<script src="jquery.js"></script>
+				<script src="options.js"></script>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
