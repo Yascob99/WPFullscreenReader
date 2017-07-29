@@ -14,12 +14,6 @@ var oldurl = window.location.href;
 var url = oldurl;
 var element = selectElement();
 var scrollPosElement = null;
-
-if (element !== null) {
-	
-	// If it found something to make fullscreen, set the scroll element to default
-	scrollPosElement = element.children().first();
-}
 var hideCS = "#hideCommentSection";
 var BGOver = "#BGcolorOverride";
 var TOver = "#TextcolorOverride";
@@ -208,14 +202,14 @@ function add_style(style, sid){
 // TODO: Add a heuristic process for determining which ones should be checked first and if multiple are valid, which should be used. Possibly based on blogger and wordpress themes (plus wikis, especially mediawikis)
 function selectElement(){
 
-	var type_main = $( ".main-content")
-	console.log(type_main)
-	var type_page = $( ".type-page" )
-	var type_post = $( ".type-post" )
-	var post = $( ".post" )
-	var main = $( "#main" )
-	var content = $( "#content" )
-	var type_blog = $(".blog-posts")
+	var type_main = $( ".main-content");
+	var type_page = $( ".type-page" );
+	var type_post = $( ".type-post" );
+	var post = $( ".post" );
+	var main = $( "#main" );
+	var content = $( "#content" );
+	var type_blog = $(".blog-posts");
+    var chapter_content = $(".chapter-body");
 	
 	// If it's of type main, and type main is not empty
 	if (type_main.length !== 0 && type_main.text() != ""){
@@ -258,6 +252,12 @@ function selectElement(){
 		console.log(type_blog)
 		return type_blog;
 	}
+    
+    // If it's a chapter content, and chapter content is not empty
+    else if (chapter_content.length !== 0 && chapter_content.text() != "" ){
+        console.log(chapter_content)
+        return chapter_content;
+    }
 	
 	// Else, return null
 	else{
@@ -268,49 +268,56 @@ function selectElement(){
 // Make the element go fullscreen
 function goFullscreen(el){
 	
-	// If it's of type post or type page, use it's parent element instead
-	if (el.selector == ".type-post" || el.selector == ".type-page"){
-		el = el.parent()
-	}
-	
 	// If the element actually exists
 	if (el != null){
+        
+        // If it's of type post or type page, use it's parent element instead
+        if (el.selector == ".type-post" || el.selector == ".type-page"){
+            el = el.parent()
+        }
+        
+        if (el != null){
 	
-		// Find the head of the document
-		var head = document.head;
-		
-		// Create a stylesheet
-		var link = document.createElement("link");
-		link.rel = "stylesheet";
-		link.type = "text/css";
-		var BGcss = document.getElementById(BGModID)
-		
-		// Wrap the element in a custom wrapper for easy css manipulation
-		el.wrap("<div id='WPFSRwrap'></div>");
-		
-		// Put a "top" element inside the custom wrapper, at the top
-		$('#WPFSRwrap').prepend("<span id='WPFSRtop'></span>")
-		
-		// Set fullscreenWrapper to the #WPFSRwrap element
-		var fullscreenWrapper = document.getElementById(window.wid);
-		
-		// If the style sheet has yet to be injected
-		if (document.getElementById(fsid) == null){
-		
-			// Set the first scroll element to the first paragraph in view
-	  		window.scrollPosElement = $('#WPFSRwrap').findPInView();
-	  		
-	  		// Make the element fullscreen
-			fullscreenWrapper.webkitRequestFullScreen();
-			
-			// Add the custom inline styling
-			add_style("#WPFSRwrap { background-color: " + get_background_color(el) + "!important; }", BGModID);
-			link.id = fsid;
-			link.href = chrome.extension.getURL(css);
-			
-			// Add the custom stylesheet
-			head.appendChild(link);
-		}
+            // Find the head of the document
+            var head = document.head;
+
+            // Create a stylesheet
+            var link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            var BGcss = document.getElementById(BGModID)
+
+            // Wrap the element in a custom wrapper for easy css manipulation
+            el.wrap("<div id='WPFSRwrap'></div>");
+
+            // Put a "top" element inside the custom wrapper, at the top
+            $('#WPFSRwrap').prepend("<span id='WPFSRtop'></span>")
+
+            // Set fullscreenWrapper to the #WPFSRwrap element
+            var fullscreenWrapper = document.getElementById(window.wid);
+
+            // If the style sheet has yet to be injected
+            if (document.getElementById(fsid) == null){
+
+                // Set the first scroll element to the first paragraph in view
+                window.scrollPosElement = $('#WPFSRwrap').findPInView();
+
+                // Make the element fullscreen
+                fullscreenWrapper.webkitRequestFullScreen();
+
+                // Add the custom inline styling
+                add_style("#WPFSRwrap { background-color: " + get_background_color(el) + "!important; }", BGModID);
+                link.id = fsid;
+                link.href = chrome.extension.getURL(css);
+
+                // Add the custom stylesheet
+                head.appendChild(link);
+            }
+        }
+        // Return the fact that there was no valid element to choose from
+        else {
+            console.log("Invalid Element")
+        }
 	}
 	// Return the fact that there was no valid element to choose from
 	else {
@@ -579,7 +586,7 @@ document.addEventListener("webkitfullscreenchange", function(){
 	
         if (window.scrollPosElement != null) {
 
-            var handler = onVisibilityChange(window.scrollPosElement, function() {
+            /*var handler = onVisibilityChange(window.scrollPosElement, function() {
                 
                 var next = window.scrollPosElement.next()
                 
@@ -589,9 +596,9 @@ document.addEventListener("webkitfullscreenchange", function(){
                 
                 window.scrollPosElement = next
                 
-            });
+            });*/
 
-            $(window).on('DOMContentLoaded load resize scroll', handler); 
+            //$(window).on('DOMContentLoaded load resize scroll', handler); 
         }
 	}
 });
